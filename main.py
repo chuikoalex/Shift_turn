@@ -1,21 +1,22 @@
+"""Программа shift-turn"""
 import pygame
+import settings
 
 
 if __name__ == '__main__':
     pygame.init()
     pygame.display.set_caption('shift_turn')
-    size = width, height = 1280, 720
+    size = settings.WIN_WIDTH, settings.WIN_HEIGHT
     screen = pygame.display.set_mode(size)
 
-    fps = 60
     clock = pygame.time.Clock()
 
-    running = True
-    while running:
+    RUNNING = True
+    while RUNNING:
         screen.fill('white')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                RUNNING = False
                 continue
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -32,5 +33,5 @@ if __name__ == '__main__':
                 print(f'event mouse_move {event.pos}')
 
         pygame.display.flip()
-        clock.tick(fps)
+        clock.tick(settings.FPS)
     pygame.quit()
