@@ -12,15 +12,15 @@ if __name__ == '__main__':
     size = settings.WIN_WIDTH, settings.WIN_HEIGHT
     window = pygame.display.set_mode(size)
 
-    clock = pygame.time.Clock()
+    game = Game()
 
     menu_sprites = pygame.sprite.Group()
     menu = Menu(menu_sprites)
 
-    game = Game()
-
+    board_sprites = pygame.sprite.Group()
     board = Board(window)
 
+    clock = pygame.time.Clock()
     RUNNING = True
     while RUNNING:
         window.fill('white')
@@ -34,6 +34,9 @@ if __name__ == '__main__':
                 if event.key == pygame.K_ESCAPE:
                     if menu.status() == 'mini':
                         menu.change_status()
+                    else:
+                        RUNNING = False
+                        continue
                 elif event.key == pygame.K_UP and event.mod == pygame.KMOD_LCTRL:
                     pass
             if event.type == pygame.KEYUP:

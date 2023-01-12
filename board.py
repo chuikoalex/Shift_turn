@@ -2,6 +2,7 @@ import pygame
 import numpy
 
 import settings
+import btn
 
 
 class Board:

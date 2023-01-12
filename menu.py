@@ -1,6 +1,7 @@
 import pygame
 
 import settings
+import btn
 
 
 class Menu(pygame.sprite.Sprite):
@@ -9,13 +10,24 @@ class Menu(pygame.sprite.Sprite):
         self.status_menu = 'full'
         self.size = settings.WIN_WIDTH, settings.WIN_HEIGHT
         self.image = pygame.Surface((settings.WIN_WIDTH, settings.WIN_HEIGHT))
-        self.image.fill('grey')
         self.rect = self.image.get_rect()
-        self.rect.bottom = int(settings.WIN_HEIGHT * 0.85)
+
+
+        self.menu_buttons = pygame.sprite.Group()
+
+        self.create_menu()
 
     def create_menu(self):
         """Построение элементов в меню"""
-        pass
+        self.image.fill('grey')
+        btn.Button_menu(self.menu_buttons, 200, 300, "3 - 3", "btn_focus_off", )
+        self.rect.bottom = int(settings.WIN_HEIGHT * 0.85)
+
+        self.menu_buttons.draw(self.image)
+
+    def draw(self):
+        if self.status_menu == "full":
+            self.menu_buttons.draw(self.image)
 
     def status(self):
         return self.status_menu
