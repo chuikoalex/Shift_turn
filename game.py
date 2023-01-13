@@ -27,7 +27,7 @@ class Game:
     colors = ['grey', 'blue', 'green', 'red', 'yellow']
 
     def __init__(self):
-        self.GAME = False
+        self.RUN_GAME = False
         self.matrix_size = 3
         self.color_number = 2
         self.level = 1
@@ -37,7 +37,7 @@ class Game:
         pass
 
     def run(self):
-        self.GAME = True
+        self.RUN_GAME = True
 
     def status(self):
-        return self.GAME
+        return self.RUN_GAME

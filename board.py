@@ -6,7 +6,7 @@ import btn
 
 
 class Board:
-    def __init__(self, window):
+    def __init__(self, window, game):
         pass
 
     def create_tables(self, size):
@@ -35,9 +35,9 @@ class Board:
         """Отрисовка всего игрового поля"""
         pass
 
-    def on_click(self):
+    def on_click(self, pos):
         """Обрабатывает нажатие мыши на объекты меню"""
-        pass
+        print("board_click")
 
     def get_click(self, mouse_pos):
         """Возвращает код нажатого (динамического) объекта"""

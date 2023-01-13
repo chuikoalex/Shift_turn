@@ -9,16 +9,17 @@ from game import Game
 if __name__ == '__main__':
     pygame.init()
     pygame.display.set_caption('shift_turn')
+    pygame.display.set_icon(pygame.image.load('shift-turn.png'))
     size = settings.WIN_WIDTH, settings.WIN_HEIGHT
     window = pygame.display.set_mode(size)
 
     game = Game()
 
     menu_sprites = pygame.sprite.Group()
-    menu = Menu(menu_sprites)
+    menu = Menu(menu_sprites, game)
 
     board_sprites = pygame.sprite.Group()
-    board = Board(window)
+    board = Board(window, game)
 
     clock = pygame.time.Clock()
     RUNNING = True
@@ -41,8 +42,11 @@ if __name__ == '__main__':
                     pass
             if event.type == pygame.KEYUP:
                 pass
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if menu.status() == 'full':
+                    menu.on_click(event.pos)
+                else:
+                    board.on_click(event.pos)
             if event.type == pygame.MOUSEBUTTONUP:
                 pass
             if event.type == pygame.MOUSEMOTION:
