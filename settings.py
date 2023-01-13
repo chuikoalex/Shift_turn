@@ -1,10 +1,10 @@
+import pickle
 """
 Настройки программы по умолчанию
 """
 WIN_WIDTH = 1280
 WIN_HEIGHT = 720
 FPS = 60
-
 
 # img/папка с изображениями
 skin = "skin_rock"
@@ -37,3 +37,11 @@ button_menu_position = {"btn_setup": [(0, 0, 200, 45), (200, 0, 200, 45)],
                         "btn_run_game": [(0, 45, 200, 45), (200, 45, 200, 45)],
                         "btn_return_game": [(0, 90, 200, 45), (200, 90, 200, 45)]
                         }
+
+# изображение счетчика очков
+stars = {'gold': (0, 0, 64, 64), 'green': (64, 0, 64, 64), 'blue': (128, 0, 64, 64)}
+try:
+    with open('save.save', 'rb') as file:
+        score_player = pickle.load(file)
+except FileNotFoundError or EOFError:
+    score_player = {'gold': 0, 'green': 0, 'blue': 0}

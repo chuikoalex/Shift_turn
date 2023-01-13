@@ -6,6 +6,7 @@ from menu import Menu
 from board import Board
 from game import Game
 
+
 if __name__ == '__main__':
     pygame.init()
     pygame.display.set_caption('shift_turn')
@@ -47,11 +48,13 @@ if __name__ == '__main__':
                     menu.on_click(event.pos)
                 else:
                     board.on_click(event.pos)
-            if event.type == pygame.MOUSEBUTTONUP:
-                pass
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
+                settings.score_player['gold'] += 1
+                print(settings.score_player['gold'])
             if event.type == pygame.MOUSEMOTION:
                 pass
 
+        menu_sprites.update()
         menu_sprites.draw(window)
         pygame.display.flip()
         clock.tick(settings.FPS)

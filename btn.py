@@ -19,9 +19,9 @@ class Button_menu(pygame.sprite.Sprite):
         else:
             self.font_color = settings.text_not_active_color
 
-        self.draw()
+        self.update()
 
-    def draw(self):
+    def update(self):
         self.image = pygame.Surface((200, 45)).convert_alpha()
         self.rect = self.image.get_rect()
 
@@ -40,11 +40,11 @@ class Button_menu(pygame.sprite.Sprite):
     def get_focus(self):
         return self.focus
 
-    def on_click(self):
+    def on_click(self, pos):
         if self.active:
-            click = None
+            click = self.rect.collidepoint(pos)
             return click, self.return_code
-        return None
+        return False, ''
 
 
 class Button_game(pygame.sprite.Sprite):
