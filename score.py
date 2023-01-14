@@ -16,7 +16,6 @@ class Score(pygame.sprite.Sprite):
         self.update()
 
     def update(self):
-        print("update score")
         score_gold = self.font.render(f' {settings.score_player["gold"]} ', True, settings.text_not_active_color)
         score_green = self.font.render(f' {settings.score_player["green"]} ', True, settings.text_not_active_color)
         score_blue = self.font.render(f' {settings.score_player["blue"]}', True, settings.text_not_active_color)
