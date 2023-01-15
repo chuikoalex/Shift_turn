@@ -20,7 +20,7 @@ if __name__ == '__main__':
     menu = Menu(menu_sprites, game)
 
     board_sprites = pygame.sprite.Group()
-    board = Board(window, game)
+    board = Board(board_sprites, game)
 
     clock = pygame.time.Clock()
     RUNNING = True
@@ -52,9 +52,13 @@ if __name__ == '__main__':
                 ...
             if event.type == pygame.MOUSEMOTION:
                 ...
+        if menu.status() == 'full':
+            menu_sprites.update()
+            menu_sprites.draw(window)
+        else:
+            board_sprites.update()
+            board_sprites.draw(window)
 
-        menu_sprites.update()
-        menu_sprites.draw(window)
         pygame.display.flip()
         clock.tick(settings.FPS)
     pygame.quit()

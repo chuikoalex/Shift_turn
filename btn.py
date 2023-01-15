@@ -96,3 +96,7 @@ class Button_game(pygame.sprite.Sprite):
     def on_click(self):
         status = None
         return status, self.name
+
+
+if __name__ == '__main__':
+    ...

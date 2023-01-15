@@ -33,12 +33,13 @@ class Menu(pygame.sprite.Sprite):
         self.setup_level = 1
 
         self.create()
+        self.update()
 
     def create(self):
         self.image.fill(settings.bg_color)
         center_x, center_y = settings.SIZE['WIN_WIDTH'] // 2, settings.SIZE['WIN_HEIGHT'] // 2
 
-        font = pygame.font.Font("font/kenvector_future.ttf", 90)
+        font = pygame.font.Font(settings.font_file, 90)
 
         score.Score(self.score_stars, center_x, center_y - 180)
 
@@ -99,9 +100,12 @@ class Menu(pygame.sprite.Sprite):
                                                               int(mouse_pos[1] + settings.SIZE['WIN_HEIGHT'] * 0.15)))
             if is_clicked:
                 if return_code == 'start':
-                    ...
+                    self.change_status()
+                    ...  # изменить кнопки старта и возврата на активные
+                    self.game.run()
+
                 elif return_code == 'return':
-                    ...
+                    self.change_status()
                 else:
                     for code in ["size", "color", "level"]:
                         if return_code.startswith(code):
@@ -121,3 +125,7 @@ class Menu(pygame.sprite.Sprite):
         self.menu_buttons.update()
         self.box_color.update(self.game.get_start_matrix())
         # self.setup_size, self.setup_color,self.setup_level
+
+
+if __name__ == '__main__':
+    ...

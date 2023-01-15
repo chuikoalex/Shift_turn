@@ -5,19 +5,19 @@ import settings
 import btn
 
 
-class Board:
-    def __init__(self, window, game):
-        pass
+class Board(pygame.sprite.Sprite):
 
-    def create_tables(self, size):
-        """Создание таблиц хранящих в себе расположение тайлов"""
-        pass
+    def __init__(self, group_sprites, game):
+        super().__init__(group_sprites)
+        self.game = game
+        self.image = pygame.Surface((settings.SIZE['WIN_WIDTH'], settings.SIZE['WIN_HEIGHT']))
+        self.rect = self.image.get_rect()
+        self.image.fill('white')
 
-    def modification_tables(self, code):
-        """Изменение таблиц в соответствии с полученным кодом
-        коды:
-        """
-        pass
+    def update(self):
+        self.draw_box_stars()
+        self.draw_tiles()
+        self.draw_buttons()
 
     def draw_box_stars(self):
         """Отрисовка центрального блока со звездочками и количеством ходов"""
@@ -31,14 +31,11 @@ class Board:
         """Отрисовка кнопок вокруг тайлов"""
         pass
 
-    def draw_board(self):
-        """Отрисовка всего игрового поля"""
-        pass
-
     def on_click(self, pos):
         """Обрабатывает нажатие мыши на объекты меню"""
-        print("board_click")
+        if self.game.get_status():
+            print("board_click")
 
-    def get_click(self, mouse_pos):
-        """Возвращает код нажатого (динамического) объекта"""
-        pass
+
+if __name__ == '__main__':
+    ...

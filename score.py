@@ -38,3 +38,7 @@ class Score(pygame.sprite.Sprite):
         self.image.blit(score_blue, (210 + score_gold.get_width() + score_green.get_width(), 0))
 
         self.rect.center = self.x, self.y
+
+
+if __name__ == '__main__':
+    ...
