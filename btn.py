@@ -125,7 +125,7 @@ class Button_board(pygame.sprite.Sprite):
 
     def on_click(self, pos):
         click = self.rect.collidepoint(pos)
-        return click, self.return_code, self.line, self.reverse
+        return click, self.return_code, self.line
 
 
 if __name__ == '__main__':

@@ -29,7 +29,7 @@ class Board(pygame.sprite.Sprite):
         self.update()
 
     def update(self):
-        self.score_step.update(20, 3)
+        self.score_step.update(self.game.get_step(), self.game.get_stars())
         self.score_step.draw(self.image)
 
         self.tiles.update()
@@ -79,10 +79,16 @@ class Board(pygame.sprite.Sprite):
         btn.Button_board(self.buttons_board, self.center_x - 428, self.center_y - 64, "rotate_down")
         btn.Button_board(self.buttons_board, self.center_x + 172, self.center_y - 64, "rotate_down", True)
 
-    def on_click(self, pos):
+    def on_click(self, mouse_pos):
         """Обрабатывает нажатие мыши на объекты меню"""
         if self.game.get_status():
-            print("board_click")
+            for button_object in self.buttons_board:
+                button_object: btn.Button_board
+                return_code: str
+                is_clicked, return_code, line = button_object.on_click(mouse_pos)
+                if is_clicked:
+                    self.game.signal_from_board(return_code, line)
+                    break
 
 
 if __name__ == '__main__':

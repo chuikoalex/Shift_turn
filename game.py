@@ -1,6 +1,6 @@
 import numpy
 
-from random import randint, shuffle
+from random import randint, shuffle, choice
 
 import settings
 
@@ -35,6 +35,7 @@ class Game:
         self.color_number = 2
         self.level = 1
         self.step = 0
+        self.stars = 0
 
         self.game_start_matrix = self.create_start_matrix()
         self.np_matrix_start = numpy.array(self.game_start_matrix)
@@ -54,17 +55,34 @@ class Game:
                     matrix[row][col] = color[matrix[row][col]]
         return matrix
 
-    def get_start_matrix(self):
-        return self.game_start_matrix
+    def create_matrices(self):
+        self.game_start_matrix = self.create_start_matrix()
+        self.np_matrix_start = numpy.array(self.game_start_matrix)
+        self.np_matrix_left = numpy.array(self.game_start_matrix)
+        self.np_matrix_right = numpy.array(self.game_start_matrix)
 
     def set_attributes_matrix(self, matrix_size=3, color_number=2):
         self.matrix_size = matrix_size
         self.color_number = color_number
-        self.stop()
+        self.create_matrices()
 
-    def signal_from_board(self, signal):
-        ...
-        return self.step
+    def signal_from_board(self, signal: str, line: int):
+        self.step -= 1
+
+        if signal.startswith("rotate"):
+            eval(f"self.{signal}()")
+        elif signal.startswith("shift_right"):
+            eval(f"self.shift_right({line})")
+        elif signal.startswith("shift_down"):
+            eval(f"self.shift_down({line})")
+
+        if self.is_win():
+            print("победа")
+            self.stop()
+
+        if self.is_fail():
+            print("проигрыш")
+            self.stop()
 
     def get_matrix_left(self):
         return self.np_matrix_left
@@ -102,32 +120,81 @@ class Game:
 
     def set_level(self, level=1):
         self.level = level
-        self.stop()
+        self.create_matrices()
 
     def run(self):
+
+        print("run game")  # test
+
         self.RUN_GAME = True
-        print('game run')
+        self.step = 10
+        self.stars = 3
+        self.intermix_matrix()
+
+    def intermix_matrix(self):
+        commands = {"rotate_right": (2, 4),
+                    "shift_right_long": (0, 3),
+                    "shift_right_short": (0, 3),
+                    "shift_down_short": (0, 3),
+                    "shift_down_long": (0, 3),
+                    "rotate_down": (0.5, 4)}
+
+        mix = self.level * 1
+        previous_command = ""
+        repeat_command = 0
+        while mix > 0:
+            now_command = choice(list(commands.keys()))
+            line = randint(0, len(self.game_start_matrix)) - 1
+
+            print(f"now_command - {now_command}, line - {line}")  # test
+
+            if previous_command == now_command:
+                repeat_command += 1
+            else:
+                repeat_command = 0
+            if repeat_command == commands[now_command][1]:
+                continue
+            if previous_command != '' and commands[previous_command][0] * commands[now_command][0] == 1:
+                continue
+
+            if now_command.startswith("rotate"):
+                eval(f"self.{now_command}()")
+            elif now_command.startswith("shift_right"):
+                eval(f"self.shift_right({line})")
+            elif now_command.startswith("shift_down"):
+                eval(f"self.shift_down({line})")
+
+            mix -= 1
 
     def stop(self):
+        print("stop game")
         self.RUN_GAME = False
-        self.game_start_matrix = self.create_start_matrix()
-        self.np_matrix_start = numpy.array(self.game_start_matrix)
-        self.np_matrix_left = numpy.array(self.game_start_matrix)
-        self.np_matrix_right = numpy.array(self.game_start_matrix)
-        print('game stop')
 
     def is_win(self):
         start_and_left = self.np_matrix_start == self.np_matrix_left
         start_and_right = self.np_matrix_start == self.np_matrix_right
-        return start_and_left.all() == start_and_right.all()
+        return start_and_left.all() and start_and_right.all()
 
     def is_fail(self):
-        if self.step == 0:
-            return True
+        if self.step < 1:
+            if self.stars < 1:
+                return True
+            else:
+                self.stars -= 1
+                self.step = 10
         return False
 
     def get_status(self):
         return self.RUN_GAME
+
+    def get_step(self):
+        return self.step
+
+    def get_stars(self):
+        return self.stars
+
+    def get_start_matrix(self):
+        return self.game_start_matrix
 
 
 if __name__ == '__main__':
