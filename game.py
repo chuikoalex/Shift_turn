@@ -64,6 +64,13 @@ class Game:
 
     def signal_from_board(self, signal):
         ...
+        return self.step
+
+    def get_matrix_left(self):
+        return self.np_matrix_left
+
+    def get_matrix_right(self):
+        return self.np_matrix_right
 
     def rotate_right(self):
         self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-1)

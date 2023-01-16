@@ -88,14 +88,44 @@ class Box_color(pygame.sprite.Sprite):
         self.rect.center = self.x, self.y - size // 2
 
 
-class Button_game(pygame.sprite.Sprite):
-    def __init__(self, group_sprites, name):
-        super().__init__(group_sprites)
-        self.name = name
+class Button_board(pygame.sprite.Sprite):
+    image_btn = {"rotate_right": (pygame.image.load(f"img/{settings.skin}/rotate_right64.png"),
+                                  pygame.image.load(f"img/{settings.skin}/rotate_down_reverse64.png")),
 
-    def on_click(self):
-        status = None
-        return status, self.name
+                 "shift_right_long": (pygame.image.load(f"img/{settings.skin}/shift_right_long64.png"),
+                                      pygame.image.load(f"img/{settings.skin}/shift_left_long64.png")),
+
+                 "shift_right_short": (pygame.image.load(f"img/{settings.skin}/shift_right_short64.png"),
+                                       pygame.image.load(f"img/{settings.skin}/shift_left_short64.png")),
+
+                 "shift_down_short": (pygame.image.load(f"img/{settings.skin}/shift_down_short64.png"),
+                                      pygame.image.load(f"img/{settings.skin}/shift_up_short64.png")),
+
+                 "shift_down_long": (pygame.image.load(f"img/{settings.skin}/shift_down_long64.png"),
+                                     pygame.image.load(f"img/{settings.skin}/shift_up_long64.png")),
+
+                 "rotate_down": (pygame.image.load(f"img/{settings.skin}/rotate_down64.png"),
+                                 pygame.image.load(f"img/{settings.skin}/rotate_right_reverse64.png"))
+                 }
+
+    def __init__(self, group_sprites, position_x, position_y, return_code, reverse=False, line=-1):
+        super().__init__(group_sprites)
+        self.x, self.y = position_x, position_y
+
+        self.return_code = return_code
+        self.reverse = reverse
+        self.line = line
+
+        self.image = pygame.Surface((64, 64)).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.image.fill("white")
+        self.image.blit(Button_board.image_btn[return_code][reverse], (0, 0))
+
+        self.rect.center = self.x, self.y
+
+    def on_click(self, pos):
+        click = self.rect.collidepoint(pos)
+        return click, self.return_code, self.line, self.reverse
 
 
 if __name__ == '__main__':
