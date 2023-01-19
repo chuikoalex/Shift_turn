@@ -4,13 +4,16 @@ import settings
 import score
 import tiles
 import btn
+from message import Message
 
 
 class Board(pygame.sprite.Sprite):
 
-    def __init__(self, group_sprites, game):
+    def __init__(self, group_sprites, window, game):
         super().__init__(group_sprites)
+        self.window = window
         self.game = game
+        self.message_board = Message()
         self.image = pygame.Surface((settings.SIZE['WIN_WIDTH'], settings.SIZE['WIN_HEIGHT']))
         self.center_x, self.center_y = settings.SIZE['WIN_WIDTH'] // 2, settings.SIZE['WIN_HEIGHT'] // 2
         self.rect = self.image.get_rect()
@@ -61,17 +64,17 @@ class Board(pygame.sprite.Sprite):
                          "shift_right_short", True, 2)
 
         btn.Button_board(self.buttons_board, self.center_x - 236, self.center_y + 128,
-                         "shift_down_short", False, 0)
+                         "shift_down_short", False, 2)
         btn.Button_board(self.buttons_board, self.center_x + 236, self.center_y + 128,
-                         "shift_down_short", True, 0)
+                         "shift_down_short", True, 2)
         btn.Button_board(self.buttons_board, self.center_x - 300, self.center_y + 128,
                          "shift_down_short", False, 1)
         btn.Button_board(self.buttons_board, self.center_x + 300, self.center_y + 128,
                          "shift_down_short", True, 1)
         btn.Button_board(self.buttons_board, self.center_x - 364, self.center_y + 128,
-                         "shift_down_short", False, 2)
+                         "shift_down_short", False, 0)
         btn.Button_board(self.buttons_board, self.center_x + 364, self.center_y + 128,
-                         "shift_down_short", True, 2)
+                         "shift_down_short", True, 0)
 
         btn.Button_board(self.buttons_board, self.center_x - 428, self.center_y + 64, "shift_down_long")
         btn.Button_board(self.buttons_board, self.center_x + 172, self.center_y + 64, "shift_down_long", True)
@@ -81,13 +84,17 @@ class Board(pygame.sprite.Sprite):
 
     def on_click(self, mouse_pos):
         """Обрабатывает нажатие мыши на объекты меню"""
-        if self.game.get_status():
+        if self.game.is_running():
             for button_object in self.buttons_board:
                 button_object: btn.Button_board
                 return_code: str
                 is_clicked, return_code, line = button_object.on_click(mouse_pos)
                 if is_clicked:
-                    self.game.signal_from_board(return_code, line)
+                    result = self.game.signal_from_board(return_code, line)
+                    if result == 'win':
+                        self.message_board.show_message("YOU WIN!!!", self.window)
+                    if result == 'fail':
+                        self.message_board.show_message("FAIL...", self.window)
                     break
 
 

@@ -1,5 +1,4 @@
 import numpy
-
 from random import randint, shuffle, choice
 
 import settings
@@ -43,10 +42,14 @@ class Game:
         self.np_matrix_right = numpy.array(self.game_start_matrix)
 
     def create_start_matrix(self):
+        """Функция создает стартовую матрицу для игры.
+           Берем шаблон и случайным образом заменяем полученное расположение цветом.
+           Таблица с вариантами цветов берется из 'setting' """
+
         var = randint(1, Game.matrices[f'{self.color_number}-color-quantity-var'])
         key = f'tiles-{self.matrix_size}*{self.matrix_size}_color-{self.color_number}_var-{var}'
         matrix = [[col for col in row] for row in Game.matrices[key]]  # полная копия двумерного списка
-        name_color = [v for v in settings.colors.values() if v != 'grey']
+        name_color = [color for color in settings.colors.values() if color != 'grey']
         shuffle(num_color := [k for k in settings.colors.keys() if k != 0])
         color = dict(zip(name_color, num_color))
         for row in range(len(matrix)):
@@ -56,6 +59,10 @@ class Game:
         return matrix
 
     def create_matrices(self):
+        """Функция строит Numpy матрицы на основе стартовой.
+        Для отображения тайлов np_matrix_left и np_matrix_right.
+        Для хранения необходимой сборки np_matrix_start."""
+
         self.game_start_matrix = self.create_start_matrix()
         self.np_matrix_start = numpy.array(self.game_start_matrix)
         self.np_matrix_left = numpy.array(self.game_start_matrix)
@@ -66,7 +73,13 @@ class Game:
         self.color_number = color_number
         self.create_matrices()
 
+    def set_level(self, level=1):
+        self.level = level
+        self.create_matrices()
+
     def signal_from_board(self, signal: str, line: int):
+        """Функция обработки сигнала полученного от нажатия кнопки сдвига тайлов."""
+
         self.step -= 1
 
         if signal.startswith("rotate"):
@@ -77,12 +90,12 @@ class Game:
             eval(f"self.shift_down({line})")
 
         if self.is_win():
-            print("победа")
             self.stop()
+            return 'win'
 
         if self.is_fail():
-            print("проигрыш")
             self.stop()
+            return 'fail'
 
     def get_matrix_left(self):
         return self.np_matrix_left
@@ -90,6 +103,7 @@ class Game:
     def get_matrix_right(self):
         return self.np_matrix_right
 
+    # Четыре функции трансформации массивов для отображения тайлов
     def rotate_right(self):
         self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-1)
         self.np_matrix_right = numpy.rot90(self.np_matrix_right)
@@ -117,12 +131,12 @@ class Game:
             self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=-1)
             self.np_matrix_right[col] = numpy.roll(self.np_matrix_right[col], 1)
             self.np_matrix_right = numpy.rot90(self.np_matrix_right)
-
-    def set_level(self, level=1):
-        self.level = level
-        self.create_matrices()
+    # ----------------------------------------------------------------------------
 
     def run(self):
+        """Функция запуска игры
+         (количество ходов - 10, количество возможных звезд - 3).
+         Вызываем замешивание матриц (np_matrix_left и np_matrix_right)."""
 
         print("run game")  # test
 
@@ -167,7 +181,6 @@ class Game:
             mix -= 1
 
     def stop(self):
-        print("stop game")
         self.RUN_GAME = False
 
     def is_win(self):
@@ -184,7 +197,7 @@ class Game:
                 self.step = 10
         return False
 
-    def get_status(self):
+    def is_running(self):
         return self.RUN_GAME
 
     def get_step(self):

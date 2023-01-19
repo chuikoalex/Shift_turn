@@ -32,10 +32,12 @@ class Menu(pygame.sprite.Sprite):
         self.setup_color = 2
         self.setup_level = 1
 
-        self.create()
+        self.create_menu()
         self.update()
 
-    def create(self):
+    def create_menu(self):
+        """Функция построения меню."""
+
         self.image.fill(settings.bg_color)
         center_x, center_y = settings.SIZE['WIN_WIDTH'] // 2, settings.SIZE['WIN_HEIGHT'] // 2
 
@@ -55,13 +57,13 @@ class Menu(pygame.sprite.Sprite):
         btn.Button_menu(self.menu_buttons, "level2", center_x - 230, center_y + 75, ".-..-", "btn_setup")
         btn.Button_menu(self.menu_buttons, "level3", center_x, center_y + 75, ".-..--..-", "btn_setup")
 
-        btn.Button_menu(self.menu_buttons, "start", center_x + 350, center_y, "", "btn_run_game")
-        btn.Button_menu(self.menu_buttons, "return", center_x + 350, center_y + 75, "", "btn_return_game")
+        btn.Button_menu(self.menu_buttons, "start", center_x + 350, center_y + 75, "", "btn_run_game")
+        btn.Button_menu(self.menu_buttons, "return", center_x + 350, center_y + 150, "", "btn_return_game")
 
-        shift = font.render("shift", True, settings.text_not_active_color)
-        turn = font.render("turn", True, settings.text_not_active_color)
-        self.image.blit(shift, (center_x - 460, center_y + 240))
-        self.image.blit(turn, (center_x + 140, center_y + 240))
+        shift_title = font.render("shift", True, settings.text_not_active_color)
+        turn_title = font.render("turn", True, settings.text_not_active_color)
+        self.image.blit(shift_title, (center_x - 460, center_y + 240))
+        self.image.blit(turn_title, (center_x + 140, center_y + 240))
 
         btn.Box_color(self.box_color, center_x, center_y + 340, self.game.get_start_matrix())
 
@@ -75,10 +77,10 @@ class Menu(pygame.sprite.Sprite):
 
     def update(self):
         if self.status_menu == "full":
-            self.menu_buttons.draw(self.image)
-            # self.score_stars.update()  # - запускать только когда победил, для обновления счета
             self.score_stars.draw(self.image)
+            self.menu_buttons.draw(self.image)
             self.box_color.draw(self.image)
+            # self.score_stars.update()  # - запускать только когда победил, для обновления счета
 
     def status(self):
         return self.status_menu
@@ -92,7 +94,8 @@ class Menu(pygame.sprite.Sprite):
             self.status_menu = 'mini'
 
     def on_click(self, mouse_pos):
-        """Обрабатывает нажатие мыши на объекты меню"""
+        """Функция обрабатывает нажатие мыши на объекты меню."""
+
         for button_object in self.menu_buttons:
             button_object: btn.Button_menu
             return_code: str
