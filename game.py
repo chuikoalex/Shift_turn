@@ -114,8 +114,12 @@ class Game:
 
     def shift_right(self, row=-1):
         if row == -1:
-            self.np_matrix_left = numpy.roll(self.np_matrix_left, 1)
-            self.np_matrix_right = numpy.roll(self.np_matrix_right, -1)
+            self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-1)
+            self.np_matrix_left = numpy.roll(self.np_matrix_left, -1, (0, 0))
+            self.np_matrix_left = numpy.rot90(self.np_matrix_left)
+            self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=-1)
+            self.np_matrix_right = numpy.roll(self.np_matrix_right, 1, (0, 0))
+            self.np_matrix_right = numpy.rot90(self.np_matrix_right)
         else:
             self.np_matrix_left[row] = numpy.roll(self.np_matrix_left[row], 1)
             self.np_matrix_right[row] = numpy.roll(self.np_matrix_right[row], -1)
@@ -138,8 +142,6 @@ class Game:
          (количество ходов - 10, количество возможных звезд - 3).
          Вызываем замешивание матриц (np_matrix_left и np_matrix_right)."""
 
-        print("run game")  # test
-
         self.RUN_GAME = True
         self.step = 10
         self.stars = 3
@@ -153,14 +155,12 @@ class Game:
                     "shift_down_long": (0, 3),
                     "rotate_down": (0.5, 4)}
 
-        mix = self.level * 1
+        mix = self.level * 3
         previous_command = ""
         repeat_command = 0
         while mix > 0:
             now_command = choice(list(commands.keys()))
             line = randint(0, len(self.game_start_matrix)) - 1
-
-            print(f"now_command - {now_command}, line - {line}")  # test
 
             if previous_command == now_command:
                 repeat_command += 1

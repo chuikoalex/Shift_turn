@@ -22,8 +22,10 @@ class Message(pygame.sprite.Sprite):
 
         self.image.fill('white')
         self.image.blit(text, (0, 5))
-        self.image.blit(Message.image_yes, (text.get_width() + 50, 15))
-        self.image.blit(Message.image_no, (text.get_width() + 180, 15))
+        if yes:
+            self.image.blit(Message.image_yes, (text.get_width() + 50, 15))
+        if no:
+            self.image.blit(Message.image_no, (text.get_width() + 180, 15))
 
         self.rect.bottom = settings.SIZE['WIN_HEIGHT']
 
@@ -53,3 +55,5 @@ class Message(pygame.sprite.Sprite):
                             if (no_pos_x - 50) < event.pos[0] < (no_pos_x + 50):
                                 if (yes_no_pos_y - 90) < event.pos[1] < (yes_no_pos_y - 30):
                                     return False
+                    if event.button == 1 and not yes and not no:
+                        return True

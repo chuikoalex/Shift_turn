@@ -34,8 +34,13 @@ class Button_menu(pygame.sprite.Sprite):
 
         self.rect.center = self.x, self.y
 
-    def change_focus(self):
-        self.focus = False if self.focus else True
+    def change_focus(self, status='opposite'):
+        if status == 'opposite':
+            self.focus = False if self.focus else True
+        elif status:
+            self.focus = True
+        else:
+            self.focus = False
 
     def get_return_code(self):
         return self.return_code

@@ -7,6 +7,7 @@ import score
 
 
 def save_game():
+    """Функция сохранения достижений (не работает в DEMO)"""
     try:
         with open(f'save.save', 'wb') as file:
             pickle.dump(settings.score_player, file)
@@ -27,6 +28,9 @@ class Menu(pygame.sprite.Sprite):
         self.menu_buttons = pygame.sprite.Group()
         self.score_stars = pygame.sprite.Group()
         self.box_color = pygame.sprite.Group()
+
+        self.btn_start = None
+        self.btn_return = None
 
         self.setup_size = 3
         self.setup_color = 2
@@ -57,8 +61,9 @@ class Menu(pygame.sprite.Sprite):
         btn.Button_menu(self.menu_buttons, "level2", center_x - 230, center_y + 75, ".-..-", "btn_setup")
         btn.Button_menu(self.menu_buttons, "level3", center_x, center_y + 75, ".-..--..-", "btn_setup")
 
-        btn.Button_menu(self.menu_buttons, "start", center_x + 350, center_y + 75, "", "btn_run_game")
-        btn.Button_menu(self.menu_buttons, "return", center_x + 350, center_y + 150, "", "btn_return_game")
+        self.btn_start = btn.Button_menu(self.menu_buttons, "start", center_x + 350, center_y + 75, "", "btn_run_game")
+        self.btn_return = btn.Button_menu(self.menu_buttons, "return", center_x + 350, center_y + 150, "",
+                                          "btn_return_game")
 
         shift_title = font.render("shift", True, settings.text_not_active_color)
         turn_title = font.render("turn", True, settings.text_not_active_color)
@@ -77,7 +82,9 @@ class Menu(pygame.sprite.Sprite):
 
     def update(self):
         if self.status_menu == "full":
+            self.button_start_return_status()
             self.score_stars.draw(self.image)
+            self.menu_buttons.update()
             self.menu_buttons.draw(self.image)
             self.box_color.draw(self.image)
             # self.score_stars.update()  # - запускать только когда победил, для обновления счета
@@ -93,9 +100,18 @@ class Menu(pygame.sprite.Sprite):
             self.rect.bottom = int(settings.SIZE['WIN_HEIGHT'] * 0.20)
             self.status_menu = 'mini'
 
+    def button_start_return_status(self):
+        if self.game.is_running():
+            self.btn_start.change_focus(True)
+            self.btn_return.change_focus(True)
+        else:
+            self.btn_start.change_focus(False)
+            self.btn_return.change_focus(False)
+
     def on_click(self, mouse_pos):
         """Функция обрабатывает нажатие мыши на объекты меню."""
-
+        if mouse_pos[1] > settings.SIZE['WIN_HEIGHT'] * 0.85 and self.game.is_running():
+            self.change_status()
         for button_object in self.menu_buttons:
             button_object: btn.Button_menu
             return_code: str
@@ -104,11 +120,11 @@ class Menu(pygame.sprite.Sprite):
             if is_clicked:
                 if return_code == 'start':
                     self.change_status()
-                    ...  # изменить кнопки старта и возврата на активные
                     self.game.run()
-
                 elif return_code == 'return':
-                    self.change_status()
+                    if self.game.is_running():
+                        self.change_status()
+                    return
                 else:
                     for code in ["size", "color", "level"]:
                         if return_code.startswith(code):
@@ -124,10 +140,7 @@ class Menu(pygame.sprite.Sprite):
                     else:
                         self.game.set_level(self.setup_level)
                     break
-
-        self.menu_buttons.update()
         self.box_color.update(self.game.get_start_matrix())
-        # self.setup_size, self.setup_color,self.setup_level
 
 
 if __name__ == '__main__':

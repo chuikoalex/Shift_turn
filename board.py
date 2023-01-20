@@ -84,6 +84,8 @@ class Board(pygame.sprite.Sprite):
 
     def on_click(self, mouse_pos):
         """Обрабатывает нажатие мыши на объекты меню"""
+        if mouse_pos[1] < settings.SIZE['WIN_HEIGHT'] * 0.19:
+            return 'pause'
         if self.game.is_running():
             for button_object in self.buttons_board:
                 button_object: btn.Button_board
@@ -91,11 +93,8 @@ class Board(pygame.sprite.Sprite):
                 is_clicked, return_code, line = button_object.on_click(mouse_pos)
                 if is_clicked:
                     result = self.game.signal_from_board(return_code, line)
-                    if result == 'win':
-                        self.message_board.show_message("YOU WIN!!!", self.window)
-                    if result == 'fail':
-                        self.message_board.show_message("FAIL...", self.window)
-                    break
+                    return result
+        return None
 
 
 if __name__ == '__main__':

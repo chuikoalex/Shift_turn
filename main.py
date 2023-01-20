@@ -25,10 +25,21 @@ if __name__ == '__main__':
 
     message = Message()
 
+    VICTORY = None
+
     clock = pygame.time.Clock()
     RUNNING = True
     while RUNNING:
         window.fill('white')
+        if VICTORY == 'win':
+            message.show_message("YOU WIN!!!", window, True)
+            VICTORY = None
+        elif VICTORY == 'fail':
+            message.show_message("FAIL...", window, True)
+            VICTORY = None
+        elif VICTORY == 'pause':
+            VICTORY = None
+            menu.change_status()
         if not game.is_running() and menu.status() == "mini":
             menu.change_status()
         for event in pygame.event.get():
@@ -52,7 +63,7 @@ if __name__ == '__main__':
                 if menu.status() == 'full':
                     menu.on_click(event.pos)
                 else:
-                    board.on_click(event.pos)
+                    VICTORY = board.on_click(event.pos)
             if event.type == pygame.MOUSEBUTTONUP:
                 ...
             if event.type == pygame.MOUSEMOTION:
