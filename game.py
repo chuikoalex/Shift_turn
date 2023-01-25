@@ -155,7 +155,7 @@ class Game:
                     "shift_down_long": (0, 3),
                     "rotate_down": (0.5, 4)}
 
-        mix = self.level * 3
+        mix = self.level * 5
         previous_command = ""
         repeat_command = 0
         while mix > 0:

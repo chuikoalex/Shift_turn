@@ -65,7 +65,7 @@ class Board(pygame.sprite.Sprite):
 
         btn.Button_board(self.buttons_board, self.center_x - 236, self.center_y + 128,
                          "shift_down_short", False, 2)
-        btn.Button_board(self.buttons_board, self.center_x + 236, self.center_y + 128,
+        btn.Button_board(self.buttons_board, self.center_x + 364, self.center_y + 128,
                          "shift_down_short", True, 2)
         btn.Button_board(self.buttons_board, self.center_x - 300, self.center_y + 128,
                          "shift_down_short", False, 1)
@@ -73,7 +73,7 @@ class Board(pygame.sprite.Sprite):
                          "shift_down_short", True, 1)
         btn.Button_board(self.buttons_board, self.center_x - 364, self.center_y + 128,
                          "shift_down_short", False, 0)
-        btn.Button_board(self.buttons_board, self.center_x + 364, self.center_y + 128,
+        btn.Button_board(self.buttons_board, self.center_x + 236, self.center_y + 128,
                          "shift_down_short", True, 0)
 
         btn.Button_board(self.buttons_board, self.center_x - 428, self.center_y + 64, "shift_down_long")

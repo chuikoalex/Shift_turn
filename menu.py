@@ -8,6 +8,7 @@ import score
 
 def save_game():
     """Функция сохранения достижений (не работает в DEMO)"""
+
     try:
         with open(f'save.save', 'wb') as file:
             pickle.dump(settings.score_player, file)
@@ -110,6 +111,7 @@ class Menu(pygame.sprite.Sprite):
 
     def on_click(self, mouse_pos):
         """Функция обрабатывает нажатие мыши на объекты меню."""
+        # Настроить нормальную работу кнопок, не должны кликаться во время игры...
         if mouse_pos[1] > settings.SIZE['WIN_HEIGHT'] * 0.85 and self.game.is_running():
             self.change_status()
         for button_object in self.menu_buttons:
