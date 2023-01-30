@@ -148,14 +148,14 @@ class Game:
         self.intermix_matrix()
 
     def intermix_matrix(self):
-        commands = {"rotate_right": (2, 4),
+        commands = {"rotate_right": (2, 3),
                     "shift_right_long": (0, 3),
                     "shift_right_short": (0, 3),
                     "shift_down_short": (0, 3),
                     "shift_down_long": (0, 3),
-                    "rotate_down": (0.5, 4)}
+                    "rotate_down": (0.5, 3)}
 
-        mix = self.level * 5
+        mix = self.level * 3
         previous_command = ""
         repeat_command = 0
         while mix > 0:

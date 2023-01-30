@@ -19,8 +19,7 @@ class Score(pygame.sprite.Sprite):
         score_gold = self.font.render(f' {settings.score_player["gold"]} ', True, settings.text_not_active_color)
         score_green = self.font.render(f' {settings.score_player["green"]} ', True, settings.text_not_active_color)
         score_blue = self.font.render(f' {settings.score_player["blue"]}', True, settings.text_not_active_color)
-        score_width = score_gold.get_width() + score_green.get_width() + score_blue.get_width()
-        self.image = pygame.Surface((210 + score_width, 64)).convert_alpha()
+        self.image = pygame.Surface((settings.SIZE['WIN_WIDTH'] - 200, 64)).convert_alpha()
         self.rect = self.image.get_rect()
 
         self.image.fill(settings.bg_color)

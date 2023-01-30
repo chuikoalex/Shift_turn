@@ -32,6 +32,12 @@ if __name__ == '__main__':
     while RUNNING:
         window.fill('white')
         if VICTORY == 'win':
+            if game.stars == 3:
+                settings.score_player["gold"] += 1
+            elif game.stars == 2:
+                settings.score_player["green"] += 1
+            elif game.stars == 1:
+                settings.score_player["blue"] += 1
             message.show_message("YOU WIN!!!", window, True)
             VICTORY = None
         elif VICTORY == 'fail':

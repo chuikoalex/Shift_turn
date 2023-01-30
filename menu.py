@@ -62,9 +62,15 @@ class Menu(pygame.sprite.Sprite):
         btn.Button_menu(self.menu_buttons, "level2", center_x - 230, center_y + 75, ".-..-", "btn_setup")
         btn.Button_menu(self.menu_buttons, "level3", center_x, center_y + 75, ".-..--..-", "btn_setup")
 
-        self.btn_start = btn.Button_menu(self.menu_buttons, "start", center_x + 350, center_y + 75, "", "btn_run_game")
+        self.btn_start = btn.Button_menu(self.menu_buttons, "start", center_x + 350, center_y + 75, "",
+                                         "btn_run_game")
         self.btn_return = btn.Button_menu(self.menu_buttons, "return", center_x + 350, center_y + 150, "",
                                           "btn_return_game")
+
+        setting_box = pygame.Surface((300, 140)).convert_alpha()
+        image_shadow = pygame.image.load(f"img/{settings.skin}/setting_box.png")
+        setting_box.blit(image_shadow, (0, 0))
+        self.image.blit(setting_box, (center_x + 195, center_y - 110))
 
         shift_title = font.render("shift", True, settings.text_not_active_color)
         turn_title = font.render("turn", True, settings.text_not_active_color)
@@ -88,7 +94,7 @@ class Menu(pygame.sprite.Sprite):
             self.menu_buttons.update()
             self.menu_buttons.draw(self.image)
             self.box_color.draw(self.image)
-            # self.score_stars.update()  # - запускать только когда победил, для обновления счета
+            self.score_stars.update()
 
     def status(self):
         return self.status_menu
