@@ -120,6 +120,7 @@ class Menu(pygame.sprite.Sprite):
         # Настроить нормальную работу кнопок, не должны кликаться во время игры...
         if mouse_pos[1] > settings.SIZE['WIN_HEIGHT'] * 0.85 and self.game.is_running():
             self.change_status()
+            return
         for button_object in self.menu_buttons:
             button_object: btn.Button_menu
             return_code: str
@@ -129,6 +130,7 @@ class Menu(pygame.sprite.Sprite):
                 if return_code == 'start':
                     self.change_status()
                     self.game.run()
+                    return
                 elif return_code == 'return':
                     if self.game.is_running():
                         self.change_status()
@@ -136,6 +138,7 @@ class Menu(pygame.sprite.Sprite):
                 else:
                     for code in ["size", "color", "level"]:
                         if return_code.startswith(code):
+                            self.game.stop()
                             for butt in self.menu_buttons:
                                 butt: btn.Button_menu
                                 if butt.get_return_code().startswith(code) and butt.get_focus():
@@ -143,11 +146,11 @@ class Menu(pygame.sprite.Sprite):
                                     break
                             button_object.change_focus()
                             exec(f'self.setup_{code} = int(return_code[-1])')
-                    if not return_code.startswith("level"):
-                        self.game.set_attributes_matrix(self.setup_size, self.setup_color)
-                    else:
+                    if return_code.startswith("level"):
                         self.game.set_level(self.setup_level)
-                    break
+                    else:
+                        self.game.set_attributes_matrix(self.setup_size, self.setup_color)
+                break
         self.box_color.update(self.game.get_start_matrix())
 
 

@@ -104,37 +104,45 @@ class Game:
         return self.np_matrix_right
 
     # Четыре функции трансформации массивов для отображения тайлов
-    def rotate_right(self):
-        self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-1)
-        self.np_matrix_right = numpy.rot90(self.np_matrix_right)
+    def rotate_right(self, mix=-1):
+        self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=mix)
+        self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=-mix)
 
-    def rotate_down(self):
-        self.np_matrix_left = numpy.rot90(self.np_matrix_left)
-        self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=-1)
+    def rotate_down(self, mix=-1):
+        self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-mix)
+        self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=mix)
 
-    def shift_right(self, row=-1):
+    def shift_right(self, row=-1, mix=-1):
         if row == -1:
-            self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-1)
+            self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=mix)
             self.np_matrix_left = numpy.roll(self.np_matrix_left, -1, (0, 0))
-            self.np_matrix_left = numpy.rot90(self.np_matrix_left)
-            self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=-1)
+            self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-mix)
+            self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=mix)
             self.np_matrix_right = numpy.roll(self.np_matrix_right, 1, (0, 0))
-            self.np_matrix_right = numpy.rot90(self.np_matrix_right)
+            self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=-mix)
         else:
-            self.np_matrix_left[row] = numpy.roll(self.np_matrix_left[row], 1)
-            self.np_matrix_right[row] = numpy.roll(self.np_matrix_right[row], -1)
+            self.np_matrix_left[row] = numpy.roll(self.np_matrix_left[row], -mix)
+            self.np_matrix_right[row] = numpy.roll(self.np_matrix_right[row], mix)
 
-    def shift_down(self, col=-1):
+    def shift_down(self, col=-1, mix=-1):
         if col == -1:
-            self.np_matrix_left = numpy.roll(self.np_matrix_left, -1, (0, 0))
-            self.np_matrix_right = numpy.roll(self.np_matrix_right, 1, (0, 0))
+            self.np_matrix_left = numpy.roll(self.np_matrix_left, mix, (0, 0))
+            self.np_matrix_right = numpy.roll(self.np_matrix_right, -mix, (0, 0))
         else:
-            self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-1)
-            self.np_matrix_left[col] = numpy.roll(self.np_matrix_left[col], -1)
-            self.np_matrix_left = numpy.rot90(self.np_matrix_left)
-            self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=-1)
-            self.np_matrix_right[col] = numpy.roll(self.np_matrix_right[col], 1)
-            self.np_matrix_right = numpy.rot90(self.np_matrix_right)
+            if mix == 1:
+                self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-mix)
+                self.np_matrix_left[col] = numpy.roll(self.np_matrix_left[col], 1)
+                self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=mix)
+                self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=-mix)
+                self.np_matrix_right[col] = numpy.roll(self.np_matrix_right[col], -1)
+                self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=mix)
+            else:
+                self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=mix)
+                self.np_matrix_left[col] = numpy.roll(self.np_matrix_left[col], -1)
+                self.np_matrix_left = numpy.rot90(self.np_matrix_left, k=-mix)
+                self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=mix)
+                self.np_matrix_right[col] = numpy.roll(self.np_matrix_right[col], 1)
+                self.np_matrix_right = numpy.rot90(self.np_matrix_right, k=-mix)
     # ----------------------------------------------------------------------------
 
     def run(self):
@@ -155,13 +163,15 @@ class Game:
                     "shift_down_long": (0, 3),
                     "rotate_down": (0.5, 3)}
 
-        mix = self.level * 3
+        mix = self.level * 5
         previous_command = ""
         repeat_command = 0
         while mix > 0:
             now_command = choice(list(commands.keys()))
-            line = randint(0, len(self.game_start_matrix)) - 1
-
+            if now_command.endswith('short'):
+                line = randint(0, len(self.game_start_matrix) - 1)
+            else:
+                line = -1
             if previous_command == now_command:
                 repeat_command += 1
             else:
@@ -170,13 +180,12 @@ class Game:
                 continue
             if previous_command != '' and commands[previous_command][0] * commands[now_command][0] == 1:
                 continue
-
             if now_command.startswith("rotate"):
-                eval(f"self.{now_command}()")
+                eval(f"self.{now_command}(mix=1)")
             elif now_command.startswith("shift_right"):
-                eval(f"self.shift_right({line})")
+                eval(f"self.shift_right({line}, mix=1)")
             elif now_command.startswith("shift_down"):
-                eval(f"self.shift_down({line})")
+                eval(f"self.shift_down({line}, mix=1)")
 
             mix -= 1
 
