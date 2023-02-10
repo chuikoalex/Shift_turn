@@ -48,6 +48,14 @@ class Menu(pygame.sprite.Sprite):
 
         font = pygame.font.Font(settings.font_file, 90)
 
+        # developer's name
+        alex_box = pygame.Surface((150, 25)).convert_alpha()
+        alex_box.fill(settings.bg_color)
+        image_alex = pygame.image.load(f"img/@chuikoalex.png")
+        alex_box.blit(image_alex, (0, 0))
+        self.image.blit(alex_box, (settings.SIZE['WIN_WIDTH'] - 150, int(settings.SIZE['WIN_HEIGHT'] * 0.16)))
+        # ----------------
+
         score.Score(self.score_stars, center_x, center_y - 180)
 
         btn.Button_menu(self.menu_buttons, "size3", center_x - 230 * 2, center_y - 75, "3 - 3", "btn_setup", True)
