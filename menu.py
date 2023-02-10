@@ -54,7 +54,7 @@ class Menu(pygame.sprite.Sprite):
         image_alex = pygame.image.load(f"img/@chuikoalex.png")
         alex_box.blit(image_alex, (0, 0))
         self.image.blit(alex_box, (settings.SIZE['WIN_WIDTH'] - 150, int(settings.SIZE['WIN_HEIGHT'] * 0.16)))
-        # ----------------
+        # -----------------
 
         score.Score(self.score_stars, center_x, center_y - 180)
 
