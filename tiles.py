@@ -1,3 +1,4 @@
+"""Модуль отрисовки тайлов."""
 import pygame
 
 import settings

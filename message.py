@@ -1,3 +1,4 @@
+"""Модуль генерации сообщений."""
 import pygame
 
 import settings

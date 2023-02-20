@@ -1,3 +1,4 @@
+"""Модуль отрисовки меню."""
 import pygame
 import pickle
 
@@ -41,7 +42,6 @@ class Menu(pygame.sprite.Sprite):
         self.update()
 
     def create_menu(self):
-        """Функция построения меню."""
 
         self.image.fill(settings.bg_color)
         center_x, center_y = settings.SIZE['WIN_WIDTH'] // 2, settings.SIZE['WIN_HEIGHT'] // 2
@@ -54,7 +54,7 @@ class Menu(pygame.sprite.Sprite):
         image_alex = pygame.image.load(f"img/@chuikoalex.png")
         alex_box.blit(image_alex, (0, 0))
         self.image.blit(alex_box, (settings.SIZE['WIN_WIDTH'] - 150, int(settings.SIZE['WIN_HEIGHT'] * 0.16)))
-        # -----------------
+        # ----------------
 
         score.Score(self.score_stars, center_x, center_y - 180)
 
@@ -124,8 +124,6 @@ class Menu(pygame.sprite.Sprite):
             self.btn_return.change_focus(False)
 
     def on_click(self, mouse_pos):
-        """Функция обрабатывает нажатие мыши на объекты меню."""
-        # Настроить нормальную работу кнопок, не должны кликаться во время игры...
         if mouse_pos[1] > settings.SIZE['WIN_HEIGHT'] * 0.85 and self.game.is_running():
             self.change_status()
             return

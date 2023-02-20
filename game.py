@@ -1,3 +1,4 @@
+"""Модуль отвечающий за игровую логику."""
 import numpy
 from random import randint, shuffle, choice
 
@@ -5,6 +6,7 @@ import settings
 
 
 class Game:
+    # Шаблоны матриц с разным расположением цветовых тайлов их количества
     matrices = {'2-color-quantity-var': 2,
                 '3-color-quantity-var': 2,
                 '4-color-quantity-var': 2,
@@ -156,6 +158,8 @@ class Game:
         self.intermix_matrix()
 
     def intermix_matrix(self):
+        """Функция замешивания матриц"""
+
         commands = {"rotate_right": (2, 3),
                     "shift_right_long": (0, 3),
                     "shift_right_short": (0, 3),

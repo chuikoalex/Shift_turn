@@ -1,3 +1,4 @@
+"""Модуль отрисовки игрового поля."""
 import pygame
 
 import settings

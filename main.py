@@ -1,4 +1,4 @@
-"""Программа shift-turn"""
+"""Программа shift-turn v1.0.0 - Beta"""
 import pygame
 
 import settings
