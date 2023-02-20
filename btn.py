@@ -1,3 +1,4 @@
+"""Модуль отрисовки кнопок."""
 import pygame
 
 import settings
