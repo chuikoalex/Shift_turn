@@ -37,7 +37,7 @@ requirements.txt
 README.md
 shift-turn.png
 shift-turn.ico
-main.py ('run for strart')
+main.py ('get started')
 board.py
 btn.py
 game.py
