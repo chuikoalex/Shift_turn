@@ -13,7 +13,7 @@ ___
 
 
 ### Игра опубликована на ресурсах / the game is published on:
->https://chuikolex.itch.io/shift-turn
+>https://chuikoalex.itch.io/shift-turn
 > 
 >https://gamejolt.com/games/shift-turn/786342
 ___
